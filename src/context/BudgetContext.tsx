@@ -58,9 +58,11 @@ export const BudgetProvider = ({children}: BudgetProviderProps)=>{
 /*
  Paso 1- creamos provider: el provider es de donde vienen los datos, en este caso los datos vienen del reducer. El provider debe manejar los datos es por eso que ahí instanciamos el reducer que previamente construimos. En este punto estamos CONECTANDO el REDUCER CON EL PROVIDER, las funciones del reducer ahora se pueden manejar desde el PROVIDER.
 
- Paso 2: crear el Context
+ Paso 2- crear el Context: usamos createContext y definimos el type que va a llevar.
 
+ Paso 4- instaciamos el contetx DENTRO del PROVIDER, con la sintaxis de BudgetContext.Provider y rodeamos la App con children. Pasamos state y dispatch como value y listo!
 
+Luego en App.tsx instanciamos un custom hook context
 
 
  */
