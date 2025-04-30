@@ -1,15 +1,16 @@
 import BudgetForm from "./components/BudgetForm";
+import BudgetTracker from "./components/BudgetTracker";
+import { useBudget } from "./hooks/useBudget";
 
 function App() {
- 
-  
+  const { state } = useBudget();
   return (
     <>
       <header className="bg-blue-600 py-8 ">
         <h1 className="text-center uppercase font-black text-white text-4xl"> Planificador de gastos</h1>
       </header>
       <div className="mt-10 p-10 md:w-3xl mx-auto bg-white rounded-lg shadow-lg sm:w-auto ">
-        <BudgetForm />
+        {state.budget > 0 ? <BudgetTracker /> : <BudgetForm />}
       </div>
     </>
   );

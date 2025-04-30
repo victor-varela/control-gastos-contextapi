@@ -41,20 +41,6 @@ export const BudgetProvider = ({children}: BudgetProviderProps)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
  Paso 1- creamos provider: el provider es de donde vienen los datos, en este caso los datos vienen del reducer. El provider debe manejar los datos es por eso que ahí instanciamos el reducer que previamente construimos. En este punto estamos CONECTANDO el REDUCER CON EL PROVIDER, las funciones del reducer ahora se pueden manejar desde el PROVIDER.
 
@@ -64,5 +50,23 @@ export const BudgetProvider = ({children}: BudgetProviderProps)=>{
 
 Luego en App.tsx instanciamos un custom hook context
 
+***************************************************
+BudgetProvider: crea el dispatch con useReducer.
 
+BudgetContext: lo transporta.
+
+useBudget(): lo accede.
+
+dispatch(...): cuando lo llamás, React invoca el reducer.
+
+💡 Metáfora rápida
+Pensá que:
+
+BudgetProvider = central eléctrica → crea energía (state + dispatch).
+
+BudgetContext = cableado → distribuye energía.
+
+useBudget() = enchufe → accedés a la energía.
+
+dispatch(...) = interruptor → manda una señal a la central (reducer) para cambiar algo.
  */
