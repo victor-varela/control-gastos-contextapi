@@ -1,16 +1,16 @@
+import { formatCurrency } from "../helpers";
 
-type AmountDisplayProps ={
-    label: string,
-    amount: number
-}
+type AmountDisplayProps = {
+  label: string;
+  amount: number;
+};
 
-const AmountDisplay = ({label, amount}:AmountDisplayProps) => {
+const AmountDisplay = ({ label, amount }: AmountDisplayProps) => {
   return (
-    <div className="flex flex-col">
-        <p>{label}</p>
-        <p>{amount}</p>
-    </div>
-  )
-}
+    <p className="text-2xl text-blue-600 font-bold">
+      {label}: <span className="text-black font-black">{formatCurrency(amount)}</span>
+    </p>
+  );
+};
 
-export default AmountDisplay
+export default AmountDisplay;
