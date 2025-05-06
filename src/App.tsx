@@ -1,5 +1,6 @@
 import BudgetForm from "./components/BudgetForm";
 import BudgetTracker from "./components/BudgetTracker";
+import ExpenseModal from "./components/ExpenseModal";
 import { useBudget } from "./hooks/useBudget";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <div className="mt-10 p-10 md:w-3xl mx-auto bg-white rounded-lg shadow-lg sm:w-auto ">
         {state.budget > 0 ? <BudgetTracker /> : <BudgetForm />}
       </div>
+      {state.budget && <ExpenseModal />}
     </>
   );
 }
