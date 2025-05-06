@@ -13,7 +13,11 @@ function App() {
       <div className="mt-10 p-10 md:w-3xl mx-auto bg-white rounded-lg shadow-lg sm:w-auto ">
         {state.budget > 0 ? <BudgetTracker /> : <BudgetForm />}
       </div>
-      {state.budget && <ExpenseModal />}
+      {state.budget && (
+        <main className="max-w-3xl mx-auto py-10">
+          <ExpenseModal />
+        </main>
+      )}
     </>
   );
 }
