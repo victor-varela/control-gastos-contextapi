@@ -3,13 +3,17 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useState } from "react";
-
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import { DraftExpense, Expense } from "../types";
 
 const ExpenseForm = () => {
-    const [value, onChange] = useState<Value>(new Date())
+
+  const [expense, setExpense] = useState<DraftExpense>({
+    expenseName: "",
+    amount: 0,
+    category: "",
+    date: new Date(),
+  });
+
   return (
     <form className="space-y-5">
       <legend className="text-2xl uppercase font-black text-center py-2 border-b-4 border-blue-500">Nuevo Gasto</legend>
@@ -23,6 +27,7 @@ const ExpenseForm = () => {
           id="expenseName"
           placeholder="Agrega el nombre del gasto"
           className="bg-slate-100 p-2"
+          value={expense.expenseName}
         />
       </div>
       <div className="flex flex-col gap-2">
@@ -35,13 +40,18 @@ const ExpenseForm = () => {
           id="amount"
           placeholder="Ingresa el monto del gasto. Ej: 300"
           className="bg-slate-100 p-2"
+          value={expense.amount}
         />
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="category" className="text-xl">
           Categoria:
         </label>
-        <select name="category" id="category" className="bg-slate-100 p-2">
+        <select 
+            name="category" 
+            id="category" 
+            className="bg-slate-100 p-2" 
+            value={expense.category}>
           <option value="">--- Seleccione ---</option>
           {categories.map(category => (
             <option key={category.id} value={category.id}>
@@ -54,7 +64,7 @@ const ExpenseForm = () => {
         <label htmlFor="date" className="text-xl">
           Fecha:
         </label>
-        <DatePicker className='bg-slate-100 p-2 border-0' onChange={onChange} value={value} />
+        <DatePicker className="bg-slate-100 p-2 border-0" value={expense.date} />
       </div>
       <input
         type="submit"
