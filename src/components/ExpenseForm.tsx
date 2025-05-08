@@ -3,16 +3,22 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useState } from "react";
-import { DraftExpense, Expense } from "../types";
+import { DraftExpense, Expense, Value } from "../types";
 
 const ExpenseForm = () => {
-
   const [expense, setExpense] = useState<DraftExpense>({
     expenseName: "",
     amount: 0,
     category: "",
     date: new Date(),
   });
+
+  const handleChangeDate = (date: Value) => {
+    setExpense({
+      ...expense,
+      date: date,
+    });
+  };
 
   return (
     <form className="space-y-5">
@@ -47,11 +53,7 @@ const ExpenseForm = () => {
         <label htmlFor="category" className="text-xl">
           Categoria:
         </label>
-        <select 
-            name="category" 
-            id="category" 
-            className="bg-slate-100 p-2" 
-            value={expense.category}>
+        <select name="category" id="category" className="bg-slate-100 p-2" value={expense.category}>
           <option value="">--- Seleccione ---</option>
           {categories.map(category => (
             <option key={category.id} value={category.id}>
@@ -64,7 +66,7 @@ const ExpenseForm = () => {
         <label htmlFor="date" className="text-xl">
           Fecha:
         </label>
-        <DatePicker className="bg-slate-100 p-2 border-0" value={expense.date} />
+        <DatePicker className="bg-slate-100 p-2 border-0" value={expense.date} onChange={handleChangeDate} />
       </div>
       <input
         type="submit"
