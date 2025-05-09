@@ -20,6 +20,19 @@ const ExpenseForm = () => {
     });
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>)=>{
+    const {name, value} = e.target
+
+    const isAmountField = ['amount'].includes(name)
+    
+    setExpense({
+      ...expense,
+      [name]: isAmountField ? +value : value
+    })
+    
+
+  }
+
   return (
     <form className="space-y-5">
       <legend className="text-2xl uppercase font-black text-center py-2 border-b-4 border-blue-500">Nuevo Gasto</legend>
@@ -34,6 +47,7 @@ const ExpenseForm = () => {
           placeholder="Agrega el nombre del gasto"
           className="bg-slate-100 p-2"
           value={expense.expenseName}
+          onChange={handleChange}
         />
       </div>
       <div className="flex flex-col gap-2">
@@ -47,13 +61,14 @@ const ExpenseForm = () => {
           placeholder="Ingresa el monto del gasto. Ej: 300"
           className="bg-slate-100 p-2"
           value={expense.amount}
+          onChange={handleChange}
         />
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="category" className="text-xl">
           Categoria:
         </label>
-        <select name="category" id="category" className="bg-slate-100 p-2" value={expense.category}>
+        <select name="category" id="category" className="bg-slate-100 p-2" value={expense.category} onChange={handleChange}>
           <option value="">--- Seleccione ---</option>
           {categories.map(category => (
             <option key={category.id} value={category.id}>
@@ -78,3 +93,15 @@ const ExpenseForm = () => {
 };
 
 export default ExpenseForm;
+
+
+/*
+Este formulario tiene la particularidad de que maneja campos de diferente tipo. EL date es de un tipo definido por la libreria. El amount es number y el resto son strings. 
+
+Para escribir en el campo date hacemos un handleChangeDate unico y para el resto de los campos un handleChange.
+
+El handleChange evalua en que campo esta el user, mediante e.target, y si esta en amount entonces se convierte a number el value ingresado por el user. Para hacer esto nos valemos de la propiedad name de cada input, de ahi la importancia de declararlos. Este es el viejo truco de la abuela.
+
+El type del handleChange lo sacamos escribiendo en la prop onChange del input 'e=>' y nos paramos sobre e para que vscode nos muestre el type. Luego, en la function handleChange debemos escribir los 2 types que pueden ser posibles en este formulario ( input y select) mediante la union | 
+
+*/
