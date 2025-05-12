@@ -3,15 +3,18 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useState } from "react";
-import { DraftExpense, Expense, Value } from "../types";
+import { DraftExpense, Value } from "../types";
+import ErrorMessage from "./ErrorMessage";
 
 const ExpenseForm = () => {
   const [expense, setExpense] = useState<DraftExpense>({
     expenseName: "",
-    amount: 0,
+    amount: "0",
     category: "",
     date: new Date(),
   });
+
+  const [error, setError] = useState('');
 
   const handleChangeDate = (date: Value) => {
     setExpense({
@@ -20,22 +23,32 @@ const ExpenseForm = () => {
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>)=>{
-    const {name, value} = e.target
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
 
-    const isAmountField = ['amount'].includes(name)
-    
     setExpense({
       ...expense,
-      [name]: isAmountField ? +value : value
-    })
-    
+      [name]: value,
+    });
+  };
 
-  }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (Object.values(expense).includes("")) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
+
+    setError('todo bien..');
+  };
 
   return (
-    <form className="space-y-5">
+    <form className="space-y-5" onSubmit={handleSubmit}>
       <legend className="text-2xl uppercase font-black text-center py-2 border-b-4 border-blue-500">Nuevo Gasto</legend>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
       <div className="flex flex-col gap-2">
         <label htmlFor="expenseName" className="text-xl">
           Nombre Gasto:
@@ -68,7 +81,13 @@ const ExpenseForm = () => {
         <label htmlFor="category" className="text-xl">
           Categoria:
         </label>
-        <select name="category" id="category" className="bg-slate-100 p-2" value={expense.category} onChange={handleChange}>
+        <select
+          name="category"
+          id="category"
+          className="bg-slate-100 p-2"
+          value={expense.category}
+          onChange={handleChange}
+        >
           <option value="">--- Seleccione ---</option>
           {categories.map(category => (
             <option key={category.id} value={category.id}>
@@ -93,7 +112,6 @@ const ExpenseForm = () => {
 };
 
 export default ExpenseForm;
-
 
 /*
 Este formulario tiene la particularidad de que maneja campos de diferente tipo. EL date es de un tipo definido por la libreria. El amount es number y el resto son strings. 

@@ -10,7 +10,6 @@ const BudgetForm = () => {
     const value = e.target.valueAsNumber;
 
     setBudget(value);
-    console.log(budget)
     
     if (value > 0) {
       setIsValid(false);
@@ -21,7 +20,6 @@ const BudgetForm = () => {
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
-    console.log('Agregando presupuesto...');
    dispatch({type:'define-budget', payload:{budget}})
     
   }
