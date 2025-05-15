@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 import { useState } from "react";
 import { DraftExpense, Value } from "../types";
 import ErrorMessage from "./ErrorMessage";
+import { useBudget } from "../hooks/useBudget";
 
 const ExpenseForm = () => {
   const [expense, setExpense] = useState<DraftExpense>({
@@ -15,6 +16,8 @@ const ExpenseForm = () => {
   });
 
   const [error, setError] = useState('');
+
+  const {dispatch}= useBudget()
 
   const handleChangeDate = (date: Value) => {
     setExpense({
@@ -40,7 +43,7 @@ const ExpenseForm = () => {
       return;
     }
 
-    setError('todo bien..');
+    dispatch({type:'add-expense', payload:{expense}})
   };
 
   return (
@@ -121,5 +124,13 @@ Para escribir en el campo date hacemos un handleChangeDate unico y para el resto
 El handleChange evalua en que campo esta el user, mediante e.target, y si esta en amount entonces se convierte a number el value ingresado por el user. Para hacer esto nos valemos de la propiedad name de cada input, de ahi la importancia de declararlos. Este es el viejo truco de la abuela.
 
 El type del handleChange lo sacamos escribiendo en la prop onChange del input 'e=>' y nos paramos sobre e para que vscode nos muestre el type. Luego, en la function handleChange debemos escribir los 2 types que pueden ser posibles en este formulario ( input y select) mediante la union | 
+
+--El enfoque para manejar el error en caso de que el formulario tenga un campo vacio es diferente a como se ha hecho en proyectos anteriores. Segun los otros proyectos pudimos haber hecho lo siguiente:
+
+{error &&<ErrorMessage error={error} />}
+
+evaluamos si tenemos algo en el state de error y renderizamos el componente ErrorMessage con la prop error = state de error.
+
+--Cuando vamos a llamar a las acciones del reducer lo hacemos A TRAVES DEL USEBUDGET() que es custom hook que creamos para ello.
 
 */

@@ -1,20 +1,30 @@
+import { DraftExpense, Expense } from "../types";
+
 export type BudgetActions =
-  | {
-      type: "define-budget";
-      payload: { budget: number };
-    }
+  | {type: "define-budget";payload: { budget: number }}
   | { type: "open-modal" }
-  | { type: "close-modal" };
+  | { type: "close-modal" }
+  | { type: "add-expense"; payload: { expense: DraftExpense } };
 
 export type BudgetState = {
   budget: number;
   modal: boolean;
+  expense: Expense[];
 };
 
 export const initialState: BudgetState = {
   budget: 0,
   modal: false,
+  expense:[]
 };
+
+const createId= (expense:DraftExpense):Expense=>{
+  return{
+    ...expense,
+    amount: Number(expense.amount),
+    id: crypto.randomUUID()
+  }
+}
 
 export const budgetReducer = (state: BudgetState = initialState, action: BudgetActions) => {
   if (action.type === "define-budget") {
@@ -35,6 +45,18 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
       ...state,
       modal: false,
     };
+  }
+  
+  if(action.type ==='add-expense'){
+    
+    const expense = createId(action.payload.expense)
+
+    return{
+      ...state,
+      expense:[...state.expense, expense]
+    }
+    
+    
   }
 
   return state;
