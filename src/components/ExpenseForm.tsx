@@ -15,9 +15,9 @@ const ExpenseForm = () => {
     date: new Date(),
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  const {dispatch}= useBudget()
+  const { dispatch } = useBudget();
 
   const handleChangeDate = (date: Value) => {
     setExpense({
@@ -37,13 +37,16 @@ const ExpenseForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (Object.values(expense).includes("")) {
       setError("Todos los campos son obligatorios");
       return;
     }
 
-    dispatch({type:'add-expense', payload:{expense}})
+    dispatch({ type: "add-expense", payload: { expense } });
+
+    //Reiniciar el Formulario
+    setExpense({ expenseName: "", amount: "0", category: "", date: new Date() });
   };
 
   return (
