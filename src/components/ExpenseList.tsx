@@ -12,9 +12,9 @@ const ExpenseList = () => {
       ) : (
         <>
           <p className="text-gray-600 text-2xl font-bold">Lista de Gastos</p>
-          {state.expense.map(expense => {
-            <ExpenseDetail />;
-          })}
+          {state.expense.map(expense => (
+            <ExpenseDetail expense={expense} key={expense.id} />
+          ))}
         </>
       )}
     </div>

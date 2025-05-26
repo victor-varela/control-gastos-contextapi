@@ -1,9 +1,24 @@
+import { Expense } from "../types";
 
+type ExpenseDetailProps = {
+  expense: Expense;
+};
 
-const ExpenseDetail = () => {
+const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
   return (
-    <div>ExpenseDetail</div>
-  )
-}
+   <div className="bg-slate-300 shadow-xl mt-5 p-10">
 
-export default ExpenseDetail
+    <div>
+
+    </div>
+
+    <div>
+      <p>{expense.expenseName}</p>
+      <p>{expense.date?.toString()}</p>
+    </div>
+
+   </div>
+  );
+};
+
+export default ExpenseDetail;
