@@ -1,4 +1,6 @@
+import { formatDate } from "../helpers";
 import { Expense } from "../types";
+import AmountDisplay from "./AmountDisplay";
 
 type ExpenseDetailProps = {
   expense: Expense;
@@ -6,19 +8,27 @@ type ExpenseDetailProps = {
 
 const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
   return (
-   <div className="bg-slate-300 shadow-xl mt-5 p-10">
+    <div className="bg-white shadow-lg w-full border-b border-gray-200 p-10 flex items-center gap-5">
+      {/* icono de categoria */}
+      <div className="w-1/2">
+        <img className="w-10" src={`icono_${expense.category}.svg`} alt="" />
+      </div>
 
-    <div>
-
+      <div>
+        <p>{expense.expenseName}</p>
+        <p className="text-slate-600 text-sm">{ formatDate(expense.date!.toString()) }</p>
+      </div>
+      {/* Cantidades */}
+      <AmountDisplay amount={expense.amount} />
     </div>
-
-    <div>
-      <p>{expense.expenseName}</p>
-      <p>{expense.date?.toString()}</p>
-    </div>
-
-   </div>
   );
 };
 
 export default ExpenseDetail;
+
+
+/**
+ *     <p className="text-slate-600 text-sm">{ formatDate(expense.date!.toString()) }</p>
+ *    aca puede patear el codigo porque si no tiene el signo de admiracion ! dice que puede ser null el valor de expense.date OJO
+ * 
+ */
