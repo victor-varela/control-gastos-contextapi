@@ -22,6 +22,10 @@ const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
         <p>{expense.expenseName}</p>
         <p className="text-slate-600 text-sm">{ formatDate(expense.date!.toString()) }</p>
       </div>
+      <div>
+        <p>Categoria</p>
+        <p className="text-slate-600 text-sm">{categoryInfo.map(cat=> cat.name)}</p>
+      </div>
       {/* Cantidades */}
       <AmountDisplay amount={expense.amount} />
     </div>
