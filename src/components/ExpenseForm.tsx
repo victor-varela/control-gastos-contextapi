@@ -96,7 +96,7 @@ const ExpenseForm = () => {
         >
           <option value="">--- Seleccione ---</option>
           {categories.map(category => (
-            <option key={category.id} value={category.icon}>
+            <option key={category.id} value={category.id}>
               {category.name}
             </option>
           ))}

@@ -1,3 +1,4 @@
+import { categories } from "../data/categories";
 import { formatDate } from "../helpers";
 import { Expense } from "../types";
 import AmountDisplay from "./AmountDisplay";
@@ -7,11 +8,14 @@ type ExpenseDetailProps = {
 };
 
 const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
+
+  const categoryInfo = categories.filter(cat => cat.id === expense.category)
+
   return (
     <div className="bg-white shadow-lg w-full border-b border-gray-200 p-10 flex items-center gap-5">
       {/* icono de categoria */}
       <div className="w-1/2">
-        <img className="w-10" src={`icono_${expense.category}.svg`} alt="" />
+        <img className="w-10" src={`icono_${categoryInfo.map(cat => cat.icon)}.svg`} alt="" />
       </div>
 
       <div>
