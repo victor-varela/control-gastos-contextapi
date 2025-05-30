@@ -4,18 +4,19 @@ export type BudgetActions =
   | { type: "define-budget"; payload: { budget: number } }
   | { type: "open-modal" }
   | { type: "close-modal" }
-  | { type: "add-expense"; payload: { expense: DraftExpense } };
+  | { type: "add-expense"; payload: { expense: DraftExpense } }
+  | { type: "remove-expense"; payload: { id: Expense['id'] } }; //asi nos traemos solamente el id y no todo el obj expense
 
 export type BudgetState = {
   budget: number;
   modal: boolean;
-  expense: Expense[];
+  expenses: Expense[];
 };
 
 export const initialState: BudgetState = {
   budget: 0,
   modal: false,
-  expense: [],
+  expenses: [],
 };
 
 const createId = (expense: DraftExpense): Expense => {
@@ -53,9 +54,18 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
 
     return {
       ...state,
-      expense: [...state.expense, expense],
-      modal: false
+      expenses: [...state.expenses, expense],
+      modal: false,
     };
+  }
+
+  if (action.type === "remove-expense") {
+
+    return{
+      ...state,
+      expenses: state.expenses.filter(expense => expense.id !== action.payload.id)
+    }
+    
   }
 
   return state;
