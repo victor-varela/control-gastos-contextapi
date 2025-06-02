@@ -5,18 +5,21 @@ export type BudgetActions =
   | { type: "open-modal" }
   | { type: "close-modal" }
   | { type: "add-expense"; payload: { expense: DraftExpense } }
-  | { type: "remove-expense"; payload: { id: Expense['id'] } }; //asi nos traemos solamente el id y no todo el obj expense
+  | { type: "remove-expense"; payload: { id: Expense["id"] } } //asi nos traemos solamente el id y no todo el obj expense
+  | { type: "editing"; payload: { id: Expense["id"] } };
 
 export type BudgetState = {
   budget: number;
   modal: boolean;
   expenses: Expense[];
+  getExpenseById: string;
 };
 
 export const initialState: BudgetState = {
   budget: 0,
   modal: false,
   expenses: [],
+  getExpenseById: "",
 };
 
 const createId = (expense: DraftExpense): Expense => {
@@ -50,22 +53,43 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
   }
 
   if (action.type === "add-expense") {
-    const expense = createId(action.payload.expense);
+    if (state.getExpenseById) {
+      const updatedExpenses = state.expenses.map(exp => exp.id === state.getExpenseById?{
+        id: state.getExpenseById,
+        expenseName: action.payload.expense.expenseName,
+        amount: Number(action.payload.expense.amount),
+        category: action.payload.expense.category,
+        date: action.payload.expense.date,
+      }: exp)
+      return {
+        ...state,
+        expenses: updatedExpenses,
+        modal: false,
+      };
+    } else {
+      const expense = createId(action.payload.expense);
 
-    return {
-      ...state,
-      expenses: [...state.expenses, expense],
-      modal: false,
-    };
+      return {
+        ...state,
+        expenses: [...state.expenses, expense],
+        modal: false,
+      };
+    }
   }
 
   if (action.type === "remove-expense") {
-
-    return{
+    return {
       ...state,
-      expenses: state.expenses.filter(expense => expense.id !== action.payload.id)
-    }
-    
+      expenses: state.expenses.filter(expense => expense.id !== action.payload.id),
+    };
+  }
+
+  if (action.type === "editing") {
+    return {
+      ...state,
+      getExpenseById: action.payload.id,
+      modal: true,
+    };
   }
 
   return state;
@@ -79,5 +103,7 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
     Paso 3: crear initialState, tambien es un objeto. Esta es una variable no un type. por eso es export const. 
 
     Paso 4: asignamos el type a initialState
+
+    *- Actualizar un gasto: es la parte mas complicada del CRUD. Nos valemos del State GLOBAL para saber el id del gasto que se va a actualizar. Agregamos esa nueva variable al state. getExpenseById
 
 */

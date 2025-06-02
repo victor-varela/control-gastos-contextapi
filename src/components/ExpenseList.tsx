@@ -4,7 +4,7 @@ import ExpenseDetail from "./ExpenseDetail";
 const ExpenseList = () => {
   const { state } = useBudget();
 
-  const isEmpty = state.expense.length === 0;
+  const isEmpty = state.expenses.length === 0;
   return (
     <div className="mt-10">
       {isEmpty ? (
@@ -12,7 +12,7 @@ const ExpenseList = () => {
       ) : (
         <>
           <p className="text-gray-600 text-2xl font-bold my-5">Lista de Gastos</p>
-          {state.expense.map(expense => (
+          {state.expenses.map(expense => (
             <ExpenseDetail expense={expense} key={expense.id} />
           ))}
         </>

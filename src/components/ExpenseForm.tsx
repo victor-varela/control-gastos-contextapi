@@ -2,7 +2,7 @@ import { categories } from "../data/categories";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DraftExpense, Value } from "../types";
 import ErrorMessage from "./ErrorMessage";
 import { useBudget } from "../hooks/useBudget";
@@ -17,7 +17,7 @@ const ExpenseForm = () => {
 
   const [error, setError] = useState("");
 
-  const { dispatch } = useBudget();
+  const { dispatch, state } = useBudget();
 
   const handleChangeDate = (date: Value) => {
     setExpense({
@@ -48,6 +48,22 @@ const ExpenseForm = () => {
     //Reiniciar el Formulario
     setExpense({ expenseName: "", amount: "0", category: "", date: new Date() });
   };
+
+  //Para llenar el formulario con los valores asociados al Id. Se llena en automatico el gasto
+  useEffect(() => {
+    state.getExpenseById
+      ? state.expenses.map(expense =>
+          expense.id === state.getExpenseById
+            ? setExpense({
+                expenseName: expense.expenseName,
+                amount: expense.amount.toString(),
+                category: expense.category,
+                date: expense.date,
+              })
+            : {}
+        )
+      : null;
+  }, [state.getExpenseById]);
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
