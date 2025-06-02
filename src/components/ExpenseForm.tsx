@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { DraftExpense, Value } from "../types";
 import ErrorMessage from "./ErrorMessage";
 import { useBudget } from "../hooks/useBudget";
+import { toAmountStr } from "../helpers";
 
 const ExpenseForm = () => {
   const [expense, setExpense] = useState<DraftExpense>({
@@ -51,18 +52,13 @@ const ExpenseForm = () => {
 
   //Para llenar el formulario con los valores asociados al Id. Se llena en automatico el gasto
   useEffect(() => {
-    state.getExpenseById
-      ? state.expenses.map(expense =>
-          expense.id === state.getExpenseById
-            ? setExpense({
-                expenseName: expense.expenseName,
-                amount: expense.amount.toString(),
-                category: expense.category,
-                date: expense.date,
-              })
-            : {}
-        )
-      : null;
+    if (state.getExpenseById) {
+      const foundExpense = state.expenses.find(exp => exp.id === state.getExpenseById);
+      if (foundExpense) {
+        const updatedExpense = toAmountStr(foundExpense);
+        setExpense(updatedExpense);
+      }
+    }
   }, [state.getExpenseById]);
 
   return (

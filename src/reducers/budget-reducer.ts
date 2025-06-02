@@ -49,22 +49,29 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
     return {
       ...state,
       modal: false,
+      getExpenseById: "",
     };
   }
 
   if (action.type === "add-expense") {
+    //Si el gasto existe REESCRIBIMOS el Array de gastos y lo agregamos al state. En ID dejamos el state de getExpenseById. Nos valemos de ese state, la verdad muy util
     if (state.getExpenseById) {
-      const updatedExpenses = state.expenses.map(exp => exp.id === state.getExpenseById?{
-        id: state.getExpenseById,
-        expenseName: action.payload.expense.expenseName,
-        amount: Number(action.payload.expense.amount),
-        category: action.payload.expense.category,
-        date: action.payload.expense.date,
-      }: exp)
+      const updatedExpenses = state.expenses.map(exp =>
+        exp.id === state.getExpenseById
+          ? {
+              id: state.getExpenseById,
+              expenseName: action.payload.expense.expenseName,
+              amount: Number(action.payload.expense.amount),
+              category: action.payload.expense.category,
+              date: action.payload.expense.date,
+            }
+          : exp
+      );
       return {
         ...state,
         expenses: updatedExpenses,
         modal: false,
+        getExpenseById: "",
       };
     } else {
       const expense = createId(action.payload.expense);
@@ -73,6 +80,7 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
         ...state,
         expenses: [...state.expenses, expense],
         modal: false,
+        getExpenseById: "",
       };
     }
   }
