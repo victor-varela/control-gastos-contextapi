@@ -59,11 +59,9 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
       const updatedExpenses = state.expenses.map(exp =>
         exp.id === state.getExpenseById
           ? {
-              id: state.getExpenseById,
-              expenseName: action.payload.expense.expenseName,
-              amount: Number(action.payload.expense.amount),
-              category: action.payload.expense.category,
-              date: action.payload.expense.date,
+              id: state.budget,
+              ...action.payload.expense,
+              amount: Number(action.payload.expense.amount)
             }
           : exp
       );
@@ -113,5 +111,20 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
     Paso 4: asignamos el type a initialState
 
     *- Actualizar un gasto: es la parte mas complicada del CRUD. Nos valemos del State GLOBAL para saber el id del gasto que se va a actualizar. Agregamos esa nueva variable al state. getExpenseById
+
+          -- Para actualizar el objeto de manera concisa y limpia: Esa sintaxis es corta, clara y poderosa: aprovecha lo mejor de ES6 para mantener el código limpio y expresivo.
+
+                Siempre que:
+
+                el objeto base (action.payload.expense) tenga las claves necesarias, y
+
+                quieras sobrescribir alguna propiedad (amount en este caso),
+
+                este patrón:
+
+                js
+                Copiar
+                Editar
+                { id: ..., ...obj, campoAjustado: valorModificado }
 
 */
