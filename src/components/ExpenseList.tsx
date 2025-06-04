@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import { useBudget } from "../hooks/useBudget";
 import ExpenseDetail from "./ExpenseDetail";
 
 const ExpenseList = () => {
   const { state } = useBudget();
+
+  useEffect(()=>{
+    localStorage.setItem('expenses', JSON.stringify(state.expenses))
+  }, [state.expenses])
 
   const isEmpty = state.expenses.length === 0;
   return (

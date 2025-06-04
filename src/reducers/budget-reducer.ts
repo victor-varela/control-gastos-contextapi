@@ -15,10 +15,22 @@ export type BudgetState = {
   getExpenseById: string;
 };
 
+const initialBudget = (): number=>{
+  //creamos lo localStorageVariable. Luego verificamos con el parse, si existe entonces esta funcion retorna ese valor sino, entonces retorna el otro valor de inicializacion en este caso 0. EN el return: existe localStorageBudget ? si existe PARSEALO asi Ts no se queja, sino existe retorna 0
+
+  const localStorageBudget = localStorage.getItem('budget')
+  return localStorageBudget ? JSON.parse(localStorageBudget) : 0
+}
+
+const initialExpenses = (): Expense[]=>{
+  const localStorageExpenses = localStorage.getItem('expenses')
+  return localStorageExpenses? JSON.parse(localStorageExpenses): []
+}
+
 export const initialState: BudgetState = {
-  budget: 0,
+  budget: initialBudget(),
   modal: false,
-  expenses: [],
+  expenses: initialExpenses(),
   getExpenseById: "",
 };
 
@@ -33,6 +45,7 @@ const createId = (expense: DraftExpense): Expense => {
 
 export const budgetReducer = (state: BudgetState = initialState, action: BudgetActions) => {
   if (action.type === "define-budget") {
+    
     return {
       ...state,
       budget: action.payload.budget,

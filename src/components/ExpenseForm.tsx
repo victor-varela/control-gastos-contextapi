@@ -63,7 +63,9 @@ const ExpenseForm = () => {
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
-      <legend className="text-2xl uppercase font-black text-center py-2 border-b-4 border-blue-500">Nuevo Gasto</legend>
+      <legend className="text-2xl uppercase font-black text-center py-2 border-b-4 border-blue-500">
+        {state.getExpenseById ? 'Actualizar Gasto' : 'Nuevo Gasto'}
+      </legend>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
@@ -123,7 +125,7 @@ const ExpenseForm = () => {
       <input
         type="submit"
         className="w-full p-2 text-xl text-white uppercase bg-blue-600 font-bold cursor-pointer hover:bg-blue-500 rounded-lg"
-        value={"Registrar Gasto"}
+        value={state.getExpenseById ? 'Guardar Cambios' : 'Registrar Gasto'}
       />
     </form>
   );
