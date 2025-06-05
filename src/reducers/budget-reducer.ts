@@ -72,7 +72,7 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
       const updatedExpenses = state.expenses.map(exp =>
         exp.id === state.getExpenseById
           ? {
-              id: state.budget,
+              id: state.getExpenseById,
               ...action.payload.expense,
               amount: Number(action.payload.expense.amount)
             }
