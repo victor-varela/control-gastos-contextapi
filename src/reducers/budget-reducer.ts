@@ -32,6 +32,7 @@ export const initialState: BudgetState = {
   modal: false,
   expenses: initialExpenses(),
   getExpenseById: "",
+  
 };
 
 const createId = (expense: DraftExpense): Expense => {

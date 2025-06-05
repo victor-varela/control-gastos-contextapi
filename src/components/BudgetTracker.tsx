@@ -3,6 +3,7 @@ import AmountDisplay from "./AmountDisplay";
 
 const BudgetTracker = () => {
   const {state} = useBudget()
+  const expended : number = state.expenses.reduce((total, expense) => total + expense.amount  ,0) 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div className="flex justify-center">
@@ -18,11 +19,11 @@ const BudgetTracker = () => {
         />
         <AmountDisplay
           label='Disponible'
-          amount={state.budget}
+          amount={state.budget - expended}
         />
         <AmountDisplay
           label='Gastado'
-          amount={state.budget}
+          amount={expended}
         />
       </div>
     </div>

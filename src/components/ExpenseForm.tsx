@@ -39,8 +39,21 @@ const ExpenseForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const expended = state.expenses.reduce((total, expense) => total + expense.amount, 0);
+    const available = state.budget - expended
+
     if (Object.values(expense).includes("")) {
       setError("Todos los campos son obligatorios");
+      return;
+    }
+
+    if (Number(expense.amount) > available) {
+      setError("El gasto no puede ser mayor al disponible");
+      return;
+    }
+
+    if (expended > available) {
+      setError("El gasto no puede ser mayor al disponible");
       return;
     }
 
@@ -64,7 +77,7 @@ const ExpenseForm = () => {
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       <legend className="text-2xl uppercase font-black text-center py-2 border-b-4 border-blue-500">
-        {state.getExpenseById ? 'Actualizar Gasto' : 'Nuevo Gasto'}
+        {state.getExpenseById ? "Actualizar Gasto" : "Nuevo Gasto"}
       </legend>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -125,7 +138,7 @@ const ExpenseForm = () => {
       <input
         type="submit"
         className="w-full p-2 text-xl text-white uppercase bg-blue-600 font-bold cursor-pointer hover:bg-blue-500 rounded-lg"
-        value={state.getExpenseById ? 'Guardar Cambios' : 'Registrar Gasto'}
+        value={state.getExpenseById ? "Guardar Cambios" : "Registrar Gasto"}
       />
     </form>
   );
