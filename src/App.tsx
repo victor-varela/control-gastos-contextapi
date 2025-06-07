@@ -9,10 +9,10 @@ function App() {
   const { state } = useBudget();
 
   //Para escribir en localStorage
-useEffect(()=>{
-  localStorage.setItem('budget', state.budget.toString())
-  localStorage.setItem('expenses', JSON.stringify(state.expenses))
-},[state])
+  useEffect(() => {
+    localStorage.setItem("budget", state.budget.toString());
+    localStorage.setItem("expenses", JSON.stringify(state.expenses));
+  }, [state]);
 
   return (
     <>

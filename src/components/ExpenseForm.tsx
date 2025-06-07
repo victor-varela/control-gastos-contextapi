@@ -18,7 +18,7 @@ const ExpenseForm = () => {
 
   const [error, setError] = useState("");
 
-  const { dispatch, state } = useBudget();
+  const { dispatch, state, totalExpended, budgetAvailable } = useBudget();
 
   const handleChangeDate = (date: Value) => {
     setExpense({
@@ -39,25 +39,22 @@ const ExpenseForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const expended = state.expenses.reduce((total, expense) => total + expense.amount, 0);
-    const available = state.budget - expended
-
     if (Object.values(expense).includes("")) {
       setError("Todos los campos son obligatorios");
       return;
     }
+    //Verifica si estamos editando 
 
-    if (Number(expense.amount) > available) {
-      setError("El gasto no puede ser mayor al disponible");
-      return;
-    }
-
-    if (expended > available) {
-      setError("El gasto no puede ser mayor al disponible");
-      return;
-    }
-
-    dispatch({ type: "add-expense", payload: { expense } });
+      const prevExpense = state.expenses.find(exp => exp.id === state.getExpenseById)
+      
+      //Si existe el gasto previo valida si es mayor al disponible 
+      if ( ( Number(expense.amount) - (prevExpense? prevExpense.amount: 0)) > budgetAvailable) {
+        setError("El gasto no puede ser mayor al disponible");
+        return;
+      } else {
+        dispatch({ type: "add-expense", payload: { expense } });
+      }
+    
 
     //Reiniciar el Formulario
     setExpense({ expenseName: "", amount: "0", category: "", date: new Date() });
