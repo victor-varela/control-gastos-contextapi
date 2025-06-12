@@ -1,4 +1,5 @@
 import { useBudget } from "../hooks/useBudget";
+import CategoryTotal from "./CategoryTotal";
 import ExpenseDetail from "./ExpenseDetail";
 
 const ExpenseList = () => {
@@ -17,7 +18,11 @@ const ExpenseList = () => {
           <p className="text-gray-600 text-2xl font-bold my-5">Lista de Gastos</p>
           {categoryFilter.map(expense => (
             <ExpenseDetail expense={expense} key={expense.id} />
+            
           ))}
+          {state.currentCategory &&(
+            <CategoryTotal/>
+          )}
         </>
       )}
     </div>

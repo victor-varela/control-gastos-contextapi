@@ -7,10 +7,10 @@ export const ExpenseCategory = () => {
     dispatch({ type: "categoryFilter", payload: { id: e.target.value } });
   };
   return (
-    <form action="">
-      <label htmlFor="category">Seleccionar Categoria</label>
-      <select id="category" onChange={handleChange}>
-        <option value="">---Todas las categorias</option>
+    <form action="" className="bg-white shadow-lg p-10 flex flex-col md:flex-row gap-6">
+      <label htmlFor="category" className="text-center">Seleccionar Categoria</label>
+      <select id="category" className="flex-1" onChange={handleChange}>
+        <option value="" className="text-center">---Todas las categorias</option>
         {categories.map(category => (
           <option value={category.id} key={category.id}>
             {category.name}
@@ -20,3 +20,9 @@ export const ExpenseCategory = () => {
     </form>
   );
 };
+
+/* 
+  Diseño mobile first es que las clases se piensen primero para mobile. flex flex-col --> asi es por defecto <--- luego en md: flex-row
+
+
+*/
