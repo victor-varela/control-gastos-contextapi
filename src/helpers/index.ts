@@ -1,4 +1,4 @@
-import { DraftExpense, Expense } from "../types";
+import { Expense } from "../types";
 
 export const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-Us", { style: "currency", currency: "USD" }).format(amount);
@@ -19,10 +19,7 @@ export const formatDate = (dateStr: string): string => {
 
 export const toAmountStr = (expense: Expense) => {
   return {
-    expenseName: expense.expenseName,
-    category: expense.category,
-    date: expense.date,
+   ...expense,
     amount: expense.amount.toString(),
-    id: expense.id,
   };
 };

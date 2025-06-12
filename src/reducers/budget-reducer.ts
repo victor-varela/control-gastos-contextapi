@@ -7,33 +7,35 @@ export type BudgetActions =
   | { type: "add-expense"; payload: { expense: DraftExpense } }
   | { type: "remove-expense"; payload: { id: Expense["id"] } } //asi nos traemos solamente el id y no todo el obj expense
   | { type: "editing"; payload: { id: Expense["id"] } }
-  | {type: 'restart-app'};
+  | { type: "restart-app" }
+  | { type: "categoryFilter"; payload: { id: Expense["category"] } };
 
 export type BudgetState = {
   budget: number;
   modal: boolean;
   expenses: Expense[];
   getExpenseById: string;
+  currentCategory: Expense['category']
 };
 
-const initialBudget = (): number=>{
+const initialBudget = (): number => {
   //creamos lo localStorageVariable. Luego verificamos con el parse, si existe entonces esta funcion retorna ese valor sino, entonces retorna el otro valor de inicializacion en este caso 0. EN el return: existe localStorageBudget ? si existe PARSEALO asi Ts no se queja, sino existe retorna 0
 
-  const localStorageBudget = localStorage.getItem('budget')
-  return localStorageBudget ? JSON.parse(localStorageBudget) : 0
-}
+  const localStorageBudget = localStorage.getItem("budget");
+  return localStorageBudget ? JSON.parse(localStorageBudget) : 0;
+};
 
-const initialExpenses = (): Expense[]=>{
-  const localStorageExpenses = localStorage.getItem('expenses')
-  return localStorageExpenses? JSON.parse(localStorageExpenses): []
-}
+const initialExpenses = (): Expense[] => {
+  const localStorageExpenses = localStorage.getItem("expenses");
+  return localStorageExpenses ? JSON.parse(localStorageExpenses) : [];
+};
 
 export const initialState: BudgetState = {
   budget: initialBudget(),
   modal: false,
   expenses: initialExpenses(),
   getExpenseById: "",
-  
+  currentCategory:''
 };
 
 const createId = (expense: DraftExpense): Expense => {
@@ -47,7 +49,6 @@ const createId = (expense: DraftExpense): Expense => {
 
 export const budgetReducer = (state: BudgetState = initialState, action: BudgetActions) => {
   if (action.type === "define-budget") {
-    
     return {
       ...state,
       budget: action.payload.budget,
@@ -76,7 +77,7 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
           ? {
               id: state.getExpenseById,
               ...action.payload.expense,
-              amount: Number(action.payload.expense.amount)
+              amount: Number(action.payload.expense.amount),
             }
           : exp
       );
@@ -112,13 +113,20 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
       modal: true,
     };
   }
-  if (action.type === 'restart-app') {
-    
+  if (action.type === "restart-app") {
     return {
       ...state,
-     budget:0,
-     expenses:[]
+      budget: 0,
+      expenses: [],
     };
+  }
+
+  if (action.type === "categoryFilter") {
+    return{
+      ...state,
+      currentCategory: action.payload.id
+    }
+    
   }
 
   return state;
@@ -127,7 +135,7 @@ export const budgetReducer = (state: BudgetState = initialState, action: BudgetA
 /*
     Paso 1: crear las acciones. Las acciones SIEMPRE SON UN TYPE. UNO SOLO POR ESO PONEMOS || Y SON UN OBJETO con 2 propiedades type:que se define directamente en el string que le asignamos y payload que es un objeto que tiene una variable y definimos el tipo (type) de esa variable
 
-    Paso 2: crear el state, el type del state. Recuerda que el reducer tiene 2 cosas State y Action. Cada cosa debe tener definido su type.
+    Paso 2: crear el state, el type del state. Recuerda que el reducer tiene 2 cosas State y Action. Cada cosa debe tener definido su type. El state son las variables (budget,modal, expenses, getExpenseById) todas esas variables agrupadas en un objeto con su diferente Type nos dan el TYPE del state.
 
     Paso 3: crear initialState, tambien es un objeto. Esta es una variable no un type. por eso es export const. 
 

@@ -18,7 +18,7 @@ const ExpenseForm = () => {
 
   const [error, setError] = useState("");
 
-  const { dispatch, state, totalExpended, budgetAvailable } = useBudget();
+  const { dispatch, state, budgetAvailable } = useBudget();
 
   const handleChangeDate = (date: Value) => {
     setExpense({
