@@ -43,6 +43,12 @@ const ExpenseForm = () => {
       setError("Todos los campos son obligatorios");
       return;
     }
+    
+    //Valida el monto
+    if(expense.amount === '0' || Object.values(expense.amount).includes('-')){
+      setError('El monto no es valido')
+      return;
+    }
     //Verifica si estamos editando 
 
       const prevExpense = state.expenses.find(exp => exp.id === state.getExpenseById)
