@@ -26,18 +26,10 @@ export const BudgetProvider = ({ children }: BudgetProviderProps) => {
   const totalExpended = state.expenses.reduce((total, expense) => total + expense.amount, 0);
   const budgetAvailable = state.budget - totalExpended;
 
-  return (
-    <BudgetContext.Provider
-      value={{
-        state,
-        dispatch,
-        totalExpended,
-        budgetAvailable,
-      }}
-    >
-      {children}
-    </BudgetContext.Provider>
-  );
+  //Se guardan todo el Paquete de valores que viaja por el contexto en una sola variable y luego se pasa en el value
+  const value = { state, dispatch, totalExpended, budgetAvailable };
+
+  return <BudgetContext.Provider value={value}>{children}</BudgetContext.Provider>;
 };
 
 /*
